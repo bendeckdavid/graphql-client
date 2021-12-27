@@ -10,6 +10,7 @@ class Client extends Mutator {
 
     private String $query;
     public String $queryType;
+    public Array $variables = [];
     
 
     public function __construct(
@@ -38,7 +39,7 @@ class Client extends Mutator {
         return stream_context_create([
             'http' => [
                 'method'  => 'POST',
-                'content' => json_encode(['query' => $this->raw_query, 'variables' => []]),
+                'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables]),
                 'header'  => [
                     'Content-Type: application/json', 
                     'User-Agent: Laravel GraphQL client'
@@ -53,7 +54,7 @@ class Client extends Mutator {
         $this->queryType = $type;
         $this->query = $query;
 
-        return $this->makeRequest();
+        return $this;
     }
 
 
@@ -75,6 +76,14 @@ class Client extends Mutator {
     }
 
 
+    public function with(Array $variables)
+    {
+        $this->variables = array_merge($this->variables, $variables);
+
+        return $this;
+    }
+
+
     public function endpoint(string $endpoint)
     {
         $this->endpoint = $endpoint;
@@ -93,6 +102,12 @@ class Client extends Mutator {
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+
+    public function get()
+    {
+        return $this->makeRequest();
     }
     
 }
