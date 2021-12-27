@@ -1,5 +1,5 @@
 {
-  "name": "graphql-client",
+  "name": "bendeckdavid/graphql-client",
   "version": "1.0.0",
   "description": "Graphql Client for Laravel",
   "main": "index.js",
