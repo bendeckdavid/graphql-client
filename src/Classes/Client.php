@@ -13,7 +13,7 @@ class Client extends Mutator {
     
 
     public function __construct(
-        protected String $endpoint
+        protected String|Null $endpoint
     )
     {
         //
@@ -72,6 +72,14 @@ class Client extends Mutator {
     public function raw(string $query)
     {
         return $this->generate(Request::RAW, $query);
+    }
+
+
+    public function endpoint(string $endpoint)
+    {
+        $this->endpoint = $endpoint;
+
+        return $this;
     }
 
 
