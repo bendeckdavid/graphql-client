@@ -1,10 +1,10 @@
 <?php
 
-namespace BendeckDev\GraphqlClient\Classes;
+namespace BendeckDavid\GraphqlClient\Classes;
 
 use Illuminate\Support\Arr;
-use BendeckDev\GraphqlClient\Enums\Request;
-use BendeckDev\GraphqlClient\Classes\Mutator;
+use BendeckDavid\GraphqlClient\Enums\Request;
+use BendeckDavid\GraphqlClient\Classes\Mutator;
 
 class Client extends Mutator {
 

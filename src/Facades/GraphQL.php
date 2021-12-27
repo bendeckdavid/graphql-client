@@ -1,6 +1,6 @@
 <?php
 
-namespace BendeckDev\GraphqlClient\Facades;
+namespace BendeckDavid\GraphqlClient\Facades;
 use Illuminate\Support\Facades\Facade;
 
 class GraphQL extends Facade

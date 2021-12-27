@@ -1,6 +1,6 @@
 <?php
 
-namespace BendeckDev\GraphqlClient\Classes;
+namespace BendeckDavid\GraphqlClient\Classes;
 
 use Illuminate\Support\Str;
 

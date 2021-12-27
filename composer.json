@@ -24,12 +24,11 @@
     "Laravel",
     "Graphql",
     "Graphql Client",
-    "BendeckDev",
     "BendeckDavid"
   ],
   "autoload": {
     "psr-4": {
-      "BendeckDev\\GraphqlClient\\": "src"
+      "BendeckDavid\\GraphqlClient\\": "src"
     }
   }
 }
