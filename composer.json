@@ -28,7 +28,14 @@
   ],
   "autoload": {
     "psr-4": {
-      "BendeckDavid\\GraphqlClient\\": "src"
+      "BendeckDavid\\GraphqlClient\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel":{
+      "providers": [
+        "BendeckDavid\\GraphqlClient\\GraphqlClientServiceProvider"
+      ]
     }
   }
 }
