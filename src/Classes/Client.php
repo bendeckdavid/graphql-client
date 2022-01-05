@@ -11,7 +11,10 @@ class Client extends Mutator {
     private String $query;
     public String $queryType;
     public Array $variables = [];
-    
+    public Array $rawHeaders = [
+        'Content-Type' => 'application/json',
+        'User-Agent' => 'Laravel GraphQL client',
+    ];
 
     public function __construct(
         protected String|Null $endpoint
@@ -20,7 +23,7 @@ class Client extends Mutator {
         //
     }
 
-    
+
     public function getRawQueryAttribute()
     {
         $content = match($this->queryType){
@@ -30,7 +33,7 @@ class Client extends Mutator {
 
         return <<<"GRAPHQL"
         {$content}
-        GRAPHQL;           
+        GRAPHQL;
     }
 
 
@@ -40,12 +43,38 @@ class Client extends Mutator {
             'http' => [
                 'method'  => 'POST',
                 'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables]),
-                'header'  => [
-                    'Content-Type: application/json', 
-                    'User-Agent: Laravel GraphQL client'
-                ],
+                'header'  => $this->headers,
             ]
-        ]);                
+        ]);
+    }
+
+    
+    public function getHeadersAttribute()
+    {
+        $formattedHeaders = [];
+        foreach ($this->rawHeaders as $key => $value) {
+            $formattedHeaders[] = $key . ': ' . $value;
+        }
+
+        return $formattedHeaders;
+    }
+
+    
+    public function header(String $key, String $value)
+    {
+        $this->rawHeaders = array_merge($this->rawHeaders, [
+            $key => $value
+        ]);
+
+        return $this;
+    }
+
+    
+    public function withHeaders(Array $headers)
+    {
+        $this->rawHeaders = array_merge($this->rawHeaders, $headers);
+
+        return $this;
     }
 
 
@@ -109,5 +138,5 @@ class Client extends Mutator {
     {
         return $this->makeRequest();
     }
-    
+
 }
