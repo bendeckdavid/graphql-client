@@ -2,6 +2,7 @@
 
 namespace BendeckDavid\GraphqlClient\Classes;
 
+use Exception;
 use Illuminate\Support\Arr;
 use BendeckDavid\GraphqlClient\Enums\Request;
 use BendeckDavid\GraphqlClient\Classes\Mutator;
@@ -20,9 +21,10 @@ class Client extends Mutator {
         protected String|Null $endpoint
     )
     {
-        //
+        //Include Authentication
+        if(config('graphqlclient.auth_credentials')) 
+        $this->includeAuthentication();
     }
-
 
     /**
      * Generate the Graphql query in raw format
@@ -56,6 +58,25 @@ class Client extends Mutator {
                 'header'  => $this->headers,
             ]
         ]);
+    }
+
+
+    /**
+     * Include authentication headers
+     * 
+     * @return void
+     */
+    private function includeAuthentication()
+    {
+        $auth_scheme = config('graphqlclient.auth_scheme');
+
+        // Check if is a valid authentication scheme
+        if (!array_key_exists($auth_scheme, config('graphqlclient.auth_schemes')))
+        throw new Exception('Invalid Graphql Client Auth Scheme');
+
+        // fill Authentication header
+        data_fill($this->rawHeaders, config('graphqlclient.auth_header'),
+        config('graphqlclient.auth_schemes')[$auth_scheme].config('graphqlclient.auth_credentials'));
     }
 
 
