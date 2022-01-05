@@ -4,10 +4,10 @@
 Minimal GraphQL client for Laravel.
 
 
-
 ## Requirements
 
 - Composer 2+
+
 
 ## Installation
 
@@ -17,7 +17,6 @@ composer require bendeckdavid/graphql-client
 ```
 
 
-    
 ## Usage
 
 Enviroment variable 
@@ -25,6 +24,23 @@ Enviroment variable
 GRAPHQL_ENDPOINT="https://api.spacex.land/graphql/"
 ```
 
+
+## Authentication
+
+We provide a minimal authentication integration by append the Authorization header to the request client
+
+```php
+GRAPHQL_CREDENTIALS="YOUR_CREDENTIALS"
+
+```
+
+'Authorization' header and 'Bearer' Schema are used by default, you can custom this by:
+```php
+GRAPHQL_AUTHENTICATION_HEADER="Authorization"
+
+// Allowed: basic, bearer, custom
+GRAPHQL_AUTHENTICATION="bearer"
+```
 
 
 ## Usage/Examples
@@ -95,7 +111,15 @@ return GraphQL::endpoint("https://api.spacex.land/graphql/")
 
 ```
 
-## Authors
+
+## Author
 
 - David Gutierrez [@bendeckdavid](https://www.github.com/bendeckdavid)
+
+
+## Contributors
+
+Contributions are always welcome!
+
+- Ehsan Quddusi [@ehsanquddusi](https://github.com/ehsanquddusi)
 

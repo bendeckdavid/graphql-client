@@ -2,6 +2,7 @@
 
 namespace BendeckDavid\GraphqlClient\Classes;
 
+use Exception;
 use Illuminate\Support\Arr;
 use BendeckDavid\GraphqlClient\Enums\Request;
 use BendeckDavid\GraphqlClient\Classes\Mutator;
@@ -20,10 +21,16 @@ class Client extends Mutator {
         protected String|Null $endpoint
     )
     {
-        //
+        //Include Authentication
+        if(config('graphqlclient.auth_credentials')) 
+        $this->includeAuthentication();
     }
 
-
+    /**
+     * Generate the Graphql query in raw format
+     * 
+     * @return string
+     */
     public function getRawQueryAttribute()
     {
         $content = match($this->queryType){
@@ -37,6 +44,11 @@ class Client extends Mutator {
     }
 
 
+    /**
+     * Build the HTTP request
+     * 
+     * @return resource
+     */
     public function getRequestAttribute()
     {
         return stream_context_create([
@@ -48,7 +60,31 @@ class Client extends Mutator {
         ]);
     }
 
-    
+
+    /**
+     * Include authentication headers
+     * 
+     * @return void
+     */
+    private function includeAuthentication()
+    {
+        $auth_scheme = config('graphqlclient.auth_scheme');
+
+        // Check if is a valid authentication scheme
+        if (!array_key_exists($auth_scheme, config('graphqlclient.auth_schemes')))
+        throw new Exception('Invalid Graphql Client Auth Scheme');
+
+        // fill Authentication header
+        data_fill($this->rawHeaders, config('graphqlclient.auth_header'),
+        config('graphqlclient.auth_schemes')[$auth_scheme].config('graphqlclient.auth_credentials'));
+    }
+
+
+    /**
+     * Return Client headers formatted
+     * 
+     * @return array
+     */
     public function getHeadersAttribute()
     {
         $formattedHeaders = [];
@@ -60,6 +96,11 @@ class Client extends Mutator {
     }
 
     
+    /**
+     * Allow to append a new header to the client
+     * 
+     * @return Client
+     */
     public function header(String $key, String $value)
     {
         $this->rawHeaders = array_merge($this->rawHeaders, [
@@ -70,6 +111,11 @@ class Client extends Mutator {
     }
 
     
+    /**
+     * Allow to pass multiple headers to the client
+     * 
+     * @return Client
+     */
     public function withHeaders(Array $headers)
     {
         $this->rawHeaders = array_merge($this->rawHeaders, $headers);
@@ -78,6 +124,24 @@ class Client extends Mutator {
     }
 
 
+    /**
+     * Allow to pass multiples variables to the client
+     * 
+     * @return Client
+     */
+    public function with(Array $variables)
+    {
+        $this->variables = array_merge($this->variables, $variables);
+
+        return $this;
+    }
+
+
+    /**
+     * Build a new client
+     * 
+     * @return Client
+     */
     private function generate(String $type, String $query)
     {
         $this->queryType = $type;
@@ -87,32 +151,44 @@ class Client extends Mutator {
     }
 
 
+    /**
+     * Build a new Graphql Query request
+     * 
+     * @return Client
+     */
     public function query(string $query)
     {
         return $this->generate(Request::QUERY, $query);
     }
 
 
+    /**
+     * Build a new Graphql Mutation request
+     * 
+     * @return Client
+     */
     public function mutation(string $query)
     {
         return $this->generate(Request::MUTATION, $query);
     }
 
 
+    /**
+     * Build a new Graphql Raw request
+     * 
+     * @return Client
+     */
     public function raw(string $query)
     {
         return $this->generate(Request::RAW, $query);
     }
 
 
-    public function with(Array $variables)
-    {
-        $this->variables = array_merge($this->variables, $variables);
-
-        return $this;
-    }
-
-
+    /**
+     * Allow to change an request endpoint
+     * 
+     * @return Client
+     */
     public function endpoint(string $endpoint)
     {
         $this->endpoint = $endpoint;
@@ -121,6 +197,11 @@ class Client extends Mutator {
     }
 
 
+    /**
+     * Execute request
+     * 
+     * @return array
+     */
     public function makeRequest()
     {
         try {
@@ -134,6 +215,11 @@ class Client extends Mutator {
     }
 
 
+    /**
+     * Return data
+     * 
+     * @return array
+     */
     public function get()
     {
         return $this->makeRequest();
