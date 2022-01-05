@@ -112,6 +112,19 @@ return GraphQL::endpoint("https://api.spacex.land/graphql/")
 ```
 
 
+## Headers
+
+You can include a header to the request by using the attribute "header" or add multiple headers by "withHeaders":
+```php
+return GraphQL::query($query)
+->header('name', 'value')
+->withHeader([
+    'name' => 'value',
+    'name' => 'value'
+])->get();
+```
+
+
 ## Author
 
 - David Gutierrez [@bendeckdavid](https://www.github.com/bendeckdavid)
