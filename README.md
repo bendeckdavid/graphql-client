@@ -147,9 +147,11 @@ return GraphQL::query($query)
 - David Gutierrez [@bendeckdavid](https://www.github.com/bendeckdavid)
 
 
-## Contributors
-
-Contributions are always welcome!
+## Top Contributors ⭐
 
 - Ehsan Quddusi [@ehsanquddusi](https://github.com/ehsanquddusi)
+
+## Contributors
+Contributions are always welcome!
+
 
