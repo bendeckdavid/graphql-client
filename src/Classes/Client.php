@@ -87,7 +87,7 @@ class Client extends Mutator {
      */
     public function getHeadersAttribute()
     {
-        //Include Authentication
+        // Include Authentication
         if(config('graphqlclient.auth_credentials') || isset($this->token)) {
             $this->includeAuthentication();
         }
