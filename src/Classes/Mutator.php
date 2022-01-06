@@ -26,7 +26,7 @@ class Mutator {
     {
         match(true) {
 
-            // Set propery, if exits, using withProperty naming
+            // Set property, if exits, using withProperty naming
             Str::startsWith($method, 'with') &&
             property_exists($this, Str::camel(substr($method, 4))) =>
                 $this->{Str::camel(substr($method, 4))} = $arguments[0],

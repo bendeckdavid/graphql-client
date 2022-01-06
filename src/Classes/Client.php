@@ -11,6 +11,7 @@ class Client extends Mutator {
 
     private String $query;
     public String $queryType;
+    protected string $token;
     public Array $variables = [];
     public Array $rawHeaders = [
         'Content-Type' => 'application/json',
@@ -21,14 +22,12 @@ class Client extends Mutator {
         protected String|Null $endpoint
     )
     {
-        //Include Authentication
-        if(config('graphqlclient.auth_credentials')) 
-        $this->includeAuthentication();
+
     }
 
     /**
      * Generate the Graphql query in raw format
-     * 
+     *
      * @return string
      */
     public function getRawQueryAttribute()
@@ -46,7 +45,7 @@ class Client extends Mutator {
 
     /**
      * Build the HTTP request
-     * 
+     *
      * @return resource
      */
     public function getRequestAttribute()
@@ -63,10 +62,10 @@ class Client extends Mutator {
 
     /**
      * Include authentication headers
-     * 
+     *
      * @return void
      */
-    private function includeAuthentication()
+    protected function includeAuthentication()
     {
         $auth_scheme = config('graphqlclient.auth_scheme');
 
@@ -75,18 +74,24 @@ class Client extends Mutator {
         throw new Exception('Invalid Graphql Client Auth Scheme');
 
         // fill Authentication header
+        $authToken = isset($this->token) ? $this->token : config('graphqlclient.auth_credentials');
         data_fill($this->rawHeaders, config('graphqlclient.auth_header'),
-        config('graphqlclient.auth_schemes')[$auth_scheme].config('graphqlclient.auth_credentials'));
+        config('graphqlclient.auth_schemes')[$auth_scheme].$authToken);
     }
 
 
     /**
      * Return Client headers formatted
-     * 
+     *
      * @return array
      */
     public function getHeadersAttribute()
     {
+        // Include Authentication
+        if(config('graphqlclient.auth_credentials') || isset($this->token)) {
+            $this->includeAuthentication();
+        }
+
         $formattedHeaders = [];
         foreach ($this->rawHeaders as $key => $value) {
             $formattedHeaders[] = $key . ': ' . $value;
@@ -95,10 +100,10 @@ class Client extends Mutator {
         return $formattedHeaders;
     }
 
-    
+
     /**
      * Allow to append a new header to the client
-     * 
+     *
      * @return Client
      */
     public function header(String $key, String $value)
@@ -110,10 +115,10 @@ class Client extends Mutator {
         return $this;
     }
 
-    
+
     /**
      * Allow to pass multiple headers to the client
-     * 
+     *
      * @return Client
      */
     public function withHeaders(Array $headers)
@@ -126,7 +131,7 @@ class Client extends Mutator {
 
     /**
      * Allow to pass multiples variables to the client
-     * 
+     *
      * @return Client
      */
     public function with(Array $variables)
@@ -139,7 +144,7 @@ class Client extends Mutator {
 
     /**
      * Build a new client
-     * 
+     *
      * @return Client
      */
     private function generate(String $type, String $query)
@@ -153,7 +158,7 @@ class Client extends Mutator {
 
     /**
      * Build a new Graphql Query request
-     * 
+     *
      * @return Client
      */
     public function query(string $query)
@@ -164,7 +169,7 @@ class Client extends Mutator {
 
     /**
      * Build a new Graphql Mutation request
-     * 
+     *
      * @return Client
      */
     public function mutation(string $query)
@@ -175,7 +180,7 @@ class Client extends Mutator {
 
     /**
      * Build a new Graphql Raw request
-     * 
+     *
      * @return Client
      */
     public function raw(string $query)
@@ -186,7 +191,7 @@ class Client extends Mutator {
 
     /**
      * Allow to change an request endpoint
-     * 
+     *
      * @return Client
      */
     public function endpoint(string $endpoint)
@@ -199,7 +204,7 @@ class Client extends Mutator {
 
     /**
      * Execute request
-     * 
+     *
      * @return array
      */
     public function makeRequest()
@@ -217,7 +222,7 @@ class Client extends Mutator {
 
     /**
      * Return data
-     * 
+     *
      * @return array
      */
     public function get()

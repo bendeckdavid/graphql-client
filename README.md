@@ -27,14 +27,15 @@ GRAPHQL_ENDPOINT="https://api.spacex.land/graphql/"
 
 ## Authentication
 
-We provide a minimal authentication integration by append the Authorization header to the request client
-
+We provide a minimal authentication integration by appending the `Authorization` header to the request client. You can pass the credentials using an `env` variable.
 ```php
 GRAPHQL_CREDENTIALS="YOUR_CREDENTIALS"
-
 ```
 
-'Authorization' header and 'Bearer' Schema are used by default, you can custom this by:
+You can also pass auth credentials at runtime using `withToken($credentials)` method.
+
+
+'Authorization' header and 'Bearer' Schema are used by default. You can override the default behaviour by defining following variables in your `.env` file.
 ```php
 GRAPHQL_AUTHENTICATION_HEADER="Authorization"
 
@@ -93,7 +94,23 @@ return GraphQL::raw('
 ->get()
 ```
 
-If you want to address te request to another endpoint, you can do:
+The `variables` or `payload` to the GraphQL request can also be passed using magic methods like:
+```php
+return GraphQL::raw('
+    mutation($name: String) {
+        insert_user(name: $name) {
+            id
+            name
+            date_added
+        }
+    }
+')
+->withName("David")
+->get()
+
+```
+
+If you want to address te request to another endpoint, you can do :
 
 ```php
 return GraphQL::endpoint("https://api.spacex.land/graphql/")
@@ -118,7 +135,7 @@ You can include a header to the request by using the attribute "header" or add m
 ```php
 return GraphQL::query($query)
 ->header('name', 'value')
-->withHeader([
+->withHeaders([
     'name' => 'value',
     'name' => 'value'
 ])->get();
