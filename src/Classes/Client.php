@@ -17,6 +17,7 @@ class Client extends Mutator {
         'Content-Type' => 'application/json',
         'User-Agent' => 'Laravel GraphQL client',
     ];
+    public Array $context = [];
 
     public function __construct(
         protected String|Null $endpoint
@@ -50,13 +51,13 @@ class Client extends Mutator {
      */
     public function getRequestAttribute()
     {
-        return stream_context_create([
+        return stream_context_create(array_merge([
             'http' => [
                 'method'  => 'POST',
                 'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables]),
                 'header'  => $this->headers,
             ]
-        ]);
+        ], $this->context));
     }
 
 
@@ -116,6 +117,18 @@ class Client extends Mutator {
     }
 
 
+    /**
+     * Allow to append a new context info to the client
+     *
+     * @return Client
+     */
+    public function context(Array $context)
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    
     /**
      * Allow to pass multiple headers to the client
      *
