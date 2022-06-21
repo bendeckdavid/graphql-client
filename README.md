@@ -148,8 +148,8 @@ Add additional context to the request
 return GraphQL::query($query)
 ->context([
     'ssl' => [
-         "verify_peer"=>false,
-         "verify_peer_name"=>false,
+         "verify_peer" => false,
+         "verify_peer_name" => false,
     ]
   ])->get();
 ```
@@ -165,6 +165,7 @@ return GraphQL::query($query)
 - Ehsan Quddusi [@ehsanquddusi](https://github.com/ehsanquddusi)
 
 ## Contributors
-Contributions are always welcome!
+
+- Ryan Mayberry [@kerkness](https://github.com/kerkness)
 
 
