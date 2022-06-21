@@ -141,6 +141,19 @@ return GraphQL::query($query)
 ])->get();
 ```
 
+## Context
+
+Add additional context to the request
+```php
+return GraphQL::query($query)
+->context([
+    'ssl' => [
+         "verify_peer"=>false,
+         "verify_peer_name"=>false,
+    ]
+  ])->get();
+```
+
 
 ## Author
 
