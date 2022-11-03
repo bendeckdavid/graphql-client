@@ -54,7 +54,7 @@ class Client extends Mutator {
         return stream_context_create(array_merge([
             'http' => [
                 'method'  => 'POST',
-                'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables]),
+                'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables], JSON_NUMERIC_CHECK),
                 'header'  => $this->headers,
             ]
         ], $this->context));
