@@ -4,6 +4,7 @@ namespace BendeckDavid\GraphqlClient\Classes;
 
 use Exception;
 use Illuminate\Support\Arr;
+use BendeckDavid\GraphqlClient\Enums\Format;
 use BendeckDavid\GraphqlClient\Enums\Request;
 use BendeckDavid\GraphqlClient\Classes\Mutator;
 
@@ -54,7 +55,7 @@ class Client extends Mutator {
         return stream_context_create(array_merge([
             'http' => [
                 'method'  => 'POST',
-                'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables]),
+                'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables], JSON_NUMERIC_CHECK),
                 'header'  => $this->headers,
             ]
         ], $this->context));
@@ -220,12 +221,18 @@ class Client extends Mutator {
      *
      * @return array
      */
-    public function makeRequest()
+    public function makeRequest(string $format)
     {
         try {
             $result = file_get_contents($this->endpoint, false, $this->request);
-            $response = json_decode($result, true);
-            return Arr::get($response, "data");
+            if ($format == Format::JSON) {
+                $response = json_decode($result, false);
+                // dd($response->data->city->hotels);
+                return $response->data;
+            } else {
+                $response = json_decode($result, true);
+                return Arr::get($response, "data");
+            }
 
         } catch (\Throwable $th) {
             throw $th;
@@ -235,12 +242,13 @@ class Client extends Mutator {
 
     /**
      * Return data
-     *
-     * @return array
+     * @param $format String (array|json) define return format, array by default
+     * 
+     * @return array by default
      */
-    public function get()
+    public function get(string $format=Format::ARRAY)
     {
-        return $this->makeRequest();
+        return $this->makeRequest($format);
     }
 
 }
