@@ -170,5 +170,6 @@ return GraphQL::query($query)
 ## Contributors
 
 - Ryan Mayberry [@kerkness](https://github.com/kerkness)
+- Jamie Duong [@chiendv](https://github.com/chiendv)
 
 

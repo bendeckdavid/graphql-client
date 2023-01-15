@@ -227,7 +227,6 @@ class Client extends Mutator {
             $result = file_get_contents($this->endpoint, false, $this->request);
             if ($format == Format::JSON) {
                 $response = json_decode($result, false);
-                // dd($response->data->city->hotels);
                 return $response->data;
             } else {
                 $response = json_decode($result, true);
