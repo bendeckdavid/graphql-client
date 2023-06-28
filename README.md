@@ -64,7 +64,8 @@ return GraphQL::query('
             flight
         }
     }
-')->get()
+')->get();
+//->get('json'); //get response as json object
 ```
 
 Mutator request:
@@ -75,7 +76,8 @@ return GraphQL::mutator('
         name
         date_added
     }
-')->get()
+')->get();
+//->get('json');
 ```
 
 You can access "query" or "mutator" as a shortcut if you are not passing variables, if is not the case you must use the "raw" attribute:
@@ -91,7 +93,8 @@ return GraphQL::raw('
     }
 ')
 ->with(["name" => "David"])
-->get()
+->get();
+//->get('json');
 ```
 
 The `variables` or `payload` to the GraphQL request can also be passed using magic methods like:
@@ -106,8 +109,8 @@ return GraphQL::raw('
     }
 ')
 ->withName("David")
-->get()
-
+->get();
+//->get('json');
 ```
 
 If you want to address te request to another endpoint, you can do :
@@ -124,8 +127,8 @@ return GraphQL::endpoint("https://api.spacex.land/graphql/")
             flight
         }
     }
-')->get()
-
+')->get();
+//->get('json');
 ```
 
 
@@ -141,15 +144,32 @@ return GraphQL::query($query)
 ])->get();
 ```
 
+## Context
+
+Add additional context to the request
+```php
+return GraphQL::query($query)
+->context([
+    'ssl' => [
+         "verify_peer" => false,
+         "verify_peer_name" => false,
+    ]
+  ])->get();
+```
+
 
 ## Author
 
 - David Gutierrez [@bendeckdavid](https://www.github.com/bendeckdavid)
 
 
-## Contributors
-
-Contributions are always welcome!
+## Top Contributors ⭐
 
 - Ehsan Quddusi [@ehsanquddusi](https://github.com/ehsanquddusi)
+
+## Contributors
+
+- Ryan Mayberry [@kerkness](https://github.com/kerkness)
+- Jamie Duong [@chiendv](https://github.com/chiendv)
+
 
