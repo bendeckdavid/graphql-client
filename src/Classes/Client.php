@@ -221,15 +221,17 @@ class Client extends Mutator {
      *
      * @return array
      */
-    public function makeRequest(string $format)
+    public function makeRequest(string $format, bool $rawResponse = false)
     {
         try {
             $result = file_get_contents($this->endpoint, false, $this->request);
             if ($format == Format::JSON) {
                 $response = json_decode($result, false);
+                if ($rawResponse) return $response;
                 return $response->data;
             } else {
                 $response = json_decode($result, true);
+                if ($rawResponse) return $response;                
                 return Arr::get($response, "data");
             }
 
@@ -245,9 +247,20 @@ class Client extends Mutator {
      * 
      * @return array by default
      */
-    public function get(string $format=Format::ARRAY)
+    public function get(string $format = Format::ARRAY)
     {
         return $this->makeRequest($format);
+    }
+
+    /**
+     * Return raw response
+     * @param $format String (array|json) define return format, array by default
+     * 
+     * @return array by default
+     */
+    public function getRaw(string $format = Format::ARRAY)
+    {
+        return $this->makeRequest($format, true);
     }
 
 }

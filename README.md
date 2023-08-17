@@ -51,7 +51,7 @@ Import GraphQL Client Facades
 use BendeckDavid\GraphqlClient\Facades\GraphQL;
 ```
 
-Basic use
+#### Basic use
 
 ```php
 return GraphQL::query('
@@ -68,7 +68,8 @@ return GraphQL::query('
 //->get('json'); //get response as json object
 ```
 
-Mutator request:
+#### Mutator Request
+
 ```php
 return GraphQL::mutator('
     insert_user(name: "David") {
@@ -98,6 +99,7 @@ return GraphQL::raw('
 ```
 
 The `variables` or `payload` to the GraphQL request can also be passed using magic methods like:
+
 ```php
 return GraphQL::raw('
     mutation($name: String) {
@@ -113,7 +115,26 @@ return GraphQL::raw('
 //->get('json');
 ```
 
-If you want to address te request to another endpoint, you can do :
+#### Raw Response
+
+You can get the raw response from the GraphQL request by using `getRaw()` method instead of `get()` in the request.
+
+```php
+return GraphQL::raw('
+    mutation($name: String) {
+        insert_user(name: $name) {
+            id
+            name
+            date_added
+        }
+    }
+')
+->with(["name" => "David"])
+->getRaw();
+//->getRaw('json');
+```
+
+If you want to address the request to another endpoint, you can do :
 
 ```php
 return GraphQL::endpoint("https://api.spacex.land/graphql/")
@@ -130,7 +151,6 @@ return GraphQL::endpoint("https://api.spacex.land/graphql/")
 ')->get();
 //->get('json');
 ```
-
 
 ## Headers
 
