@@ -19,6 +19,7 @@ class Client extends Mutator {
         'User-Agent' => 'Laravel GraphQL client',
     ];
     public Array $context = [];
+    protected bool $ignoreErrors = false ;
 
     public function __construct(
         protected String|Null $endpoint
@@ -52,11 +53,16 @@ class Client extends Mutator {
      */
     public function getRequestAttribute()
     {
+        $content = ['query' => $this->raw_query];
+        if (!empty($this->variables)) {
+            $content['variables'] = $this->variables;
+        }
         return stream_context_create(array_merge([
             'http' => [
                 'method'  => 'POST',
-                'content' => json_encode(['query' => $this->raw_query, 'variables' => $this->variables], JSON_NUMERIC_CHECK),
+                'content' => json_encode($content, JSON_NUMERIC_CHECK),
                 'header'  => $this->headers,
+                'ignore_errors' => $this->ignoreErrors
             ]
         ], $this->context));
     }
