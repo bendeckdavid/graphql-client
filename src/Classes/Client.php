@@ -21,7 +21,7 @@ class Client extends Mutator {
     public array $context = [];
 
     public function __construct(
-        protected string|Null $endpoint
+        protected string|null $endpoint
     )
     {
 
