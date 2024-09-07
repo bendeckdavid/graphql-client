@@ -10,18 +10,18 @@ use BendeckDavid\GraphqlClient\Classes\Mutator;
 
 class Client extends Mutator {
 
-    private String $query;
-    public String $queryType;
+    private string $query;
+    public string $queryType;
     protected string $token;
-    public Array $variables = [];
-    public Array $rawHeaders = [
+    public array $variables = [];
+    public array $rawHeaders = [
         'Content-Type' => 'application/json',
         'User-Agent' => 'Laravel GraphQL client',
     ];
-    public Array $context = [];
+    public array $context = [];
 
     public function __construct(
-        protected String|Null $endpoint
+        protected string|null $endpoint
     )
     {
 
@@ -73,12 +73,12 @@ class Client extends Mutator {
 
         // Check if is a valid authentication scheme
         if (!array_key_exists($auth_scheme, config('graphqlclient.auth_schemes')))
-        throw new Exception('Invalid Graphql Client Auth Scheme');
+            throw new Exception('Invalid Graphql Client Auth Scheme');
 
         // fill Authentication header
         $authToken = isset($this->token) ? $this->token : config('graphqlclient.auth_credentials');
         data_fill($this->rawHeaders, config('graphqlclient.auth_header'),
-        config('graphqlclient.auth_schemes')[$auth_scheme].$authToken);
+            config('graphqlclient.auth_schemes')[$auth_scheme].$authToken);
     }
 
 
@@ -108,7 +108,7 @@ class Client extends Mutator {
      *
      * @return Client
      */
-    public function header(String $key, String $value)
+    public function header(string $key, string $value)
     {
         $this->rawHeaders = array_merge($this->rawHeaders, [
             $key => $value
@@ -123,19 +123,19 @@ class Client extends Mutator {
      *
      * @return Client
      */
-    public function context(Array $context)
+    public function context(array $context)
     {
         $this->context = $context;
         return $this;
     }
 
-    
+
     /**
      * Allow to pass multiple headers to the client
      *
      * @return Client
      */
-    public function withHeaders(Array $headers)
+    public function withHeaders(array $headers)
     {
         $this->rawHeaders = array_merge($this->rawHeaders, $headers);
 
@@ -148,7 +148,7 @@ class Client extends Mutator {
      *
      * @return Client
      */
-    public function with(Array $variables)
+    public function with(array $variables)
     {
         $this->variables = array_merge($this->variables, $variables);
 
@@ -161,7 +161,7 @@ class Client extends Mutator {
      *
      * @return Client
      */
-    private function generate(String $type, String $query)
+    private function generate(string $type, string $query)
     {
         $this->queryType = $type;
         $this->query = $query;
@@ -231,7 +231,7 @@ class Client extends Mutator {
                 return $response->data;
             } else {
                 $response = json_decode($result, true);
-                if ($rawResponse) return $response;                
+                if ($rawResponse) return $response;
                 return Arr::get($response, "data");
             }
 
@@ -243,8 +243,8 @@ class Client extends Mutator {
 
     /**
      * Return data
-     * @param $format String (array|json) define return format, array by default
-     * 
+     * @param $format string (array|json) define return format, array by default
+     *
      * @return array by default
      */
     public function get(string $format = Format::ARRAY)
@@ -254,8 +254,8 @@ class Client extends Mutator {
 
     /**
      * Return raw response
-     * @param $format String (array|json) define return format, array by default
-     * 
+     * @param $format string (array|json) define return format, array by default
+     *
      * @return array by default
      */
     public function getRaw(string $format = Format::ARRAY)
