@@ -191,5 +191,6 @@ return GraphQL::query($query)
 
 - Ryan Mayberry [@kerkness](https://github.com/kerkness)
 - Jamie Duong [@chiendv](https://github.com/chiendv)
+- Billy [@billythekid](https://github.com/billythekid)
 
 
