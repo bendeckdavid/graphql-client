@@ -189,8 +189,7 @@ return GraphQL::query($query)
 
 ## Contributors
 
-- Ryan Mayberry [@kerkness](https://github.com/kerkness)
-- Jamie Duong [@chiendv](https://github.com/chiendv)
-- Billy [@billythekid](https://github.com/billythekid)
+Thanks to [all the contributors](https://github.com/bendeckdavid/graphql-client/graphs/contributors) involved in the development of the project!
 
-
+[![all-contributors](https://contrib.rocks/image?repo=bendeckdavid/graphql-client)](https://github.com/bendeckdavid/graphql-client/graphs/contributors)
+<sub> — Made with [contrib.rocks](https://contrib.rocks)</sub>
