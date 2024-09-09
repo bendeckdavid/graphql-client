@@ -10,7 +10,7 @@ return [
     */
 
     'auth_header' => env('GRAPHQL_AUTHENTICATION_HEADER', 'Authorization'),
-    'auth_credentials' => env('GRAPHQL_CREDENTIALS', null),
+    'auth_credentials' => env('GRAPHQL_CREDENTIALS'),
 
     /*
     |--------------------------------------------------------------------------
@@ -24,9 +24,9 @@ return [
     'auth_scheme' => env('GRAPHQL_AUTHENTICATION', 'bearer'),
     
     'auth_schemes' => [
-        'basic'     => 'Basic ',
-        'bearer'    => 'Bearer ',
-        'custom'    =>  null
+        'basic'  => 'Basic ',
+        'bearer' => 'Bearer ',
+        'custom' => ''
     ],
 
     /*
@@ -36,6 +36,6 @@ return [
     |
     */
 
-    'graphql_endpoint' => env('GRAPHQL_ENDPOINT', null),
+    'graphql_endpoint' => env('GRAPHQL_ENDPOINT'),
   
 ];
