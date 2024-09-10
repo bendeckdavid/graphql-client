@@ -14,7 +14,9 @@
     "illuminate/support": "^10.48|^11.0"
   },
   "require-dev": {
-    "pestphp/pest": "^2.35"
+    "pestphp/pest": "^2.35",
+    "orchestra/testbench": "^9.4",
+    "pestphp/pest-plugin-laravel": "^2.4"
   },
   "keywords": [
     "Laravel",
@@ -24,7 +26,8 @@
   ],
   "autoload": {
     "psr-4": {
-      "BendeckDavid\\GraphqlClient\\": "src/"
+      "BendeckDavid\\GraphqlClient\\": "src/",
+      "BendeckDavid\\GraphqlClient\\Tests\\": "tests/"
     }
   },
   "extra": {
